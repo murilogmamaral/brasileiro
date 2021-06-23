@@ -90,7 +90,7 @@ n <- ".swiper-slide"
 guardar <- site %>%
   html_nodes(n)
 
-# raspa cada jogo de cada jogada
+# raspa cada jogo de cada rodada
 b2021 <- scrap(1)
 for (i in 2:38) {
   if (is.null(scrap(i))){
