@@ -170,7 +170,7 @@ server <- function(session,input,output) {
       layout(hovermode = "closest",
              plot_bgcolor='white',
              paper_bgcolor='white',
-             xaxis=list(range = c(0,39), tickformat=',d',title = "rodadas\n", dtick = 2,showspikes=TRUE,automargin=TRUE),
+             xaxis=list(range = c(0,39), tickformat=',d',title = "jogos\n", dtick = 2,showspikes=TRUE,automargin=TRUE),
              yaxis=list(range = c(-1,91), title = "pontos", dtick = 3,showspikes=TRUE,automargin=TRUE)
       )
     
@@ -221,14 +221,14 @@ server <- function(session,input,output) {
         add_trace(x = a,
                   y = b,
                   text = c(texto),
-                  marker = list(color = ifelse(i==1,"#EBEDEF",
-                                               ifelse(i==2,"#D6DBDF",
-                                                      ifelse(i==3,"#AEB6BF",
+                  marker = list(color = ifelse(i==1,"#D7DBDD",
+                                               ifelse(i==2,"#B2BABB",
+                                                      ifelse(i==3,"#85929E",
                                                              "#A93226"))),
-                              width = 3),
-                  line = list(color = ifelse(i==1,"#EBEDEF",
-                                             ifelse(i==2,"#D6DBDF",
-                                                    ifelse(i==3,"#AEB6BF",
+                                width = 3),
+                  line = list(color = ifelse(i==1,"#D7DBDD",
+                                             ifelse(i==2,"#B2BABB",
+                                                    ifelse(i==3,"#85929E",
                                                            "#A93226"))),
                               width = 2),
                   name=gsub("\\-.*","",INICIO))
