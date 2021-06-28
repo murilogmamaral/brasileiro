@@ -5,7 +5,7 @@ library(rvest)
 
 b2018 <- read.csv("b2018.csv")
 b2019 <- read.csv("b2019.csv")
-b2020 <- read.csv("b2020.csv")
+b2020 <- read.csv("b2020.csv") 
 
 scrap <- function(i){
   
