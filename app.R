@@ -2,10 +2,10 @@ library(tidyverse)
 library(plotly)
 library(shiny)
 library(rvest)
-
+ 
 b2018 <- read.csv("b2018.csv")
 b2019 <- read.csv("b2019.csv")
-b2020 <- read.csv("b2020.csv") 
+b2020 <- read.csv("b2020.csv")
 
 scrap <- function(i){
   
@@ -90,7 +90,7 @@ n <- ".swiper-slide"
 guardar <- site %>%
   html_nodes(n)
 
-# raspa cada jogo de cada rodada
+# raspa cada jogo de cada jogada
 b2021 <- scrap(1)
 for (i in 2:38) {
   if (is.null(scrap(i))){
@@ -142,18 +142,29 @@ filtrado <- FILTRO("Bahia")
 
 ui <- fluidPage(
   div(style="margin-left:30px;margin-top:30px;",
-      h2("Campeonato Brasileiro 2021 - Série A"),
-      h4("Comparação do desempenho atual de cada clube com os três anos anteriores")),
+      h3("Campeonato Brasileiro 2021 - Série A"),
+      h5("Comparação do desempenho atual de cada clube com os três anos anteriores")),
   div(style="margin-left:30px;margin-top:30px;",
       selectInput("times",NULL,lista.times,selected ="Bahia",width=180)),
   plotlyOutput("desempenho",height = 520),
-  div(style="margin-left:25px;margin-top:25px",
-      htmlOutput("creditos"))
+  div(style="margin-left:25px;",
+      div(style="margin-top:10px;",HTML("<span style='font-size:12px;'>
+               Desenvolvido por <a href='https://github.com/murilogmamaral' target='_blank' style='margin-top:3px;'>
+               murilogmamaral</a></span>")))
 )
 
 server <- function(session,input,output) {
   
-  output$creditos <- renderText("<p style='color:gray'>Atualização automática via web scraping.<br><b>Fonte:</b> <i>https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a</i></p>")
+  
+  showModal(modalDialog(
+    title = "Covid-19 em Salvador",
+    paste0("Este aplicativo é atualizado em tempo real com informações extraídas do site da CBF.
+            Passe o mouse sobre o gráfico para ver a data, o local e o resultado dos jogos."),
+    easyClose = TRUE,
+    footer = NULL
+  ))
+  
+  output$creditos <- renderText(paste("<p style='color:gray'>Atualização automática via web scraping.<br><b>Fonte:</b> <i>website da Confederação Brasileira de Futebol</i></p>"))
   
   observeEvent(input$times,{
     
@@ -225,7 +236,7 @@ server <- function(session,input,output) {
                                                ifelse(i==2,"#B2BABB",
                                                       ifelse(i==3,"#85929E",
                                                              "#A93226"))),
-                                width = 3),
+                              width = 3),
                   line = list(color = ifelse(i==1,"#D7DBDD",
                                              ifelse(i==2,"#B2BABB",
                                                     ifelse(i==3,"#85929E",
