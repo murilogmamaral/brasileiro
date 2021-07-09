@@ -7,7 +7,7 @@ b2018 <- read.csv("b2018.csv")
 b2019 <- read.csv("b2019.csv")
 b2020 <- read.csv("b2020.csv")
 
-scrap <- function(i){
+web_scraping <- function(i){
   
   df.final <- NULL
   
@@ -90,19 +90,19 @@ n <- ".swiper-slide"
 guardar <- site %>%
   html_nodes(n)
 
-# raspa cada jogo de cada jogada
-b2021 <- scrap(1)
+# raspa cada jogo de cada rodada
+b2021 <- web_scraping(1)
 for (i in 2:38) {
-  if (is.null(scrap(i))){
+  if (is.null(web_scraping(i))){
     break
   }
   else {
-    b2021 <- rbind(b2021,scrap(i))
+    b2021 <- rbind(b2021,web_scraping(i))
   }
 }
 results <- rbind(results,b2021)
 
-# limpeza
+# padronização
 results$data <- as.Date(results$data,format = "%d/%m/%Y")
 results$rodada <- as.numeric(results$rodada)
 results$gols.mandante <- as.numeric(results$gols.mandante)
@@ -150,21 +150,18 @@ ui <- fluidPage(
   div(style="margin-left:25px;",
       div(style="margin-top:10px;",HTML("<span style='font-size:12px;'>
                Desenvolvido por <a href='https://github.com/murilogmamaral' target='_blank' style='margin-top:3px;'>
-               murilogmamaral</a></span>")))
+               murilogmamaral</a></span><br>")))
 )
 
 server <- function(session,input,output) {
   
-  
   showModal(modalDialog(
-    title = "Covid-19 em Salvador",
+    title = "Nota",
     paste0("Este aplicativo é atualizado em tempo real com informações extraídas do site da CBF.
-            Passe o mouse sobre o gráfico para ver a data, o local e o resultado dos jogos."),
+            Passe o mouse sobre o gráfico para ver a data, o local e o resultado de cada jogo."),
     easyClose = TRUE,
     footer = NULL
   ))
-  
-  output$creditos <- renderText(paste("<p style='color:gray'>Atualização automática via web scraping.<br><b>Fonte:</b> <i>website da Confederação Brasileira de Futebol</i></p>"))
   
   observeEvent(input$times,{
     
@@ -227,6 +224,7 @@ server <- function(session,input,output) {
                      ano$mandante," ",ano$gols.mandante,
                      "x",
                      ano$gols.visitante," ",ano$visitante)
+      
       fig <-
         fig %>%
         add_trace(x = a,
@@ -247,10 +245,8 @@ server <- function(session,input,output) {
     }
     
     output$desempenho <- renderPlotly(fig)
-    
+
   })
-  
-    
 }
 
 shinyApp(ui,server)
